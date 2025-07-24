@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>先期技轉金分配系統</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2aa59f;
+      --secondary-color: #067577;
+      --accent-color: #b2e054;
+      --dark-color: #0a5557;
+      --light-color: #f8f9fa;
+    }
+    
+    body {
+      font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+    }
+    
+    .container-app {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      background-color: white;
+    }
+    
+    .header {
+      text-align: center;
+      padding: 25px 0;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border-radius: 12px;
+      color: white;
+      margin-bottom: 30px;
+    }
+    
+    .header h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 0;
+    }
+    
+    .form-label {
+      font-weight: 600;
+      color: var(--dark-color);
+    }
+    
+    .btn-submit {
+      font-size: 18px;
+      background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+      color: white;
+      border-radius: 30px;
+      padding: 10px 25px;
+      border: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .btn-submit-step2 {
+      font-size: 18px;
+      background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+      color: white;
+      border-radius: 30px;
+      padding: 10px 25px;
+      border: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .btn-step-back {
+      font-size: 18px;
+      background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+      color: white;
+      border-radius: 30px;
+      padding: 10px 25px;
+      border: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    .btn-step-back:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+    
+    .btn-submit:hover {
+      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      color: #333;
+    }
+    
+    .form-control, .form-select {
+      border-radius: 8px;
+      padding: 10px 15px;
+      border: 2px solid #ddd;
+      transition: all 0.3s;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(42, 165, 159, 0.25);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .required:after {
+      content: " *";
+      color: #e32;
+    }
+    
+    .form-note {
+      font-size: 14px;
+      color: #6c757d;
+      margin-top: 5px;
+    }
+    
+    .logo {
+      width: 80px;
+      height: 80px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .logo i {
+      font-size: 40px;
+      color: var(--primary-color);
+    }
+    
+    .section-title {
+      font-size: 20px;
+      color: var(--secondary-color);
+      border-left: 4px solid var(--accent-color);
+      padding-left: 12px;
+      margin: 30px 0 20px;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 14px;
+      color: #6c757d;
+      margin-top: 30px;
+      border-top: 1px solid #eee;
+    }
+    
+    .alert-box {
+      display: none;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .app-number {
+      background-color: #e8f4f8;
+      border-left: 4px solid var(--primary-color);
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    
+    .funds-summary {
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border: 1px solid #e9ecef;
+    }
+    
+    .funds-total {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--secondary-color);
+      margin-bottom: 10px;
+    }
+    
+    .creator-card {
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: white;
+      transition: all 0.3s;
+    }
+    
+    .creator-card:hover {
+      border-color: var(--primary-color);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .creator-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
+      position: relative;
+    }
+    
+    .step:not(:last-child):after {
+      content: '';
+      position: absolute;
+      top: 15px;
+      right: -20px;
+      width: 40px;
+      height: 2px;
+      background-color: var(--primary-color);
+    }
+    
+    .step-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #e9ecef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: #6c757d;
+    }
+    
+    .step.active .step-circle {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .step.active .step-label {
+      color: var(--secondary-color);
+      font-weight: 600;
+    }
+    
+    .step-label {
+      font-size: 14px;
+      color: #6c757d;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .distribution-error {
+      color: #dc3545;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .allocated-summary {
+        font-size: 0.9em;
+        color: #6c757d;
+        margin-top: 4px;
+    }
+
+
+    .success-icon {
+      animation: pop 0.5s ease;
+    }
+
+    @keyframes pop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-app">
+    <!-- 步驟指示器 -->
+    <div class="step-indicator">
+      <div class="step active">
+        <div class="step-circle">1</div>
+        <div class="step-label">基本資料</div>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <div class="step-label">資金分配</div>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <div class="step-label">完成登記</div>
+      </div>
+    </div>
+    
+    <div class="header">
+      <div class="logo">
+        <i class="fas fa-file-contract"></i>
+      </div>
+      <h3>先期技轉金申請系統</h3>
+      <p>請依步驟完成申請程序</p>
+    </div>
+    
+    <div id="alertBox" class="alert-box" role="alert">
+      <i class="fas fa-check-circle me-2"></i>
+      <span id="alertMessage">操作成功！</span>
+    </div>
+    
+    <!-- 第一步：基本資料表單 -->
+    <div id="step1Form">
+      <form id="basicInfoForm">
+        <div class="row">
+          <div class="col-12">
+            <h4 class="section-title">基本資訊</h4>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label class="form-label required">產學合作類型：</label>
+            <select class="form-select" name="collab_type" id="collab_type" required>
+              <option value="" disabled selected>請選擇類型</option>
+              <option value="建教產學合作">建教產學合作</option>
+              <option value="國科會產學合作">國科會產學合作</option>
+            </select>
+          </div>
+          
+            <div class="col-md-6 form-group">
+            <label class="form-label required">創作人：</label>
+            <input class="form-control" name="creator" required>
+            <div class="form-note">若有多位創作人請用","隔開</div>
+            </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label class="form-label required">Email：</label>
+            <input class="form-control" type="email" name="user_email" required>
+          </div>
+          
+          <div class="col-md-6 form-group">
+            <label class="form-label required">合作廠商：</label>
+            <input class="form-control" name="company" required>
+          </div>
+        </div>
+        
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label class="form-label required">學院/中心：</label>
+          <select class="form-select" id="faculty" name="faculty" required>
+            <option value="" disabled selected>請選擇學院/中心</option>
+            <!-- 學院選項將由JS填充 -->
+          </select>
+          <div class="form-note">請填入與公文上簽時相同學院或中心</div>
+        </div>
+        
+        <div class="col-md-6 form-group">
+          <label class="form-label required">系所/中心：</label>
+          <select class="form-select" id="department" name="department" required disabled>
+            <option value="" disabled selected>請先選擇學院/中心</option>
+            <!-- 系所選項將由JS填充 -->
+          </select>
+        </div>
+      </div>
+      <!-- 額外選項區塊（非必填） -->
+      <div class="row" id="extraDeptFields" style="display: none;">
+        <div class="col-md-6 form-group">
+          <label class="form-label">其他學院/中心（非必填）：</label>
+          <select class="form-select" id="optional_faculty" name="optional_faculty">
+            <option value="" disabled selected>請選擇其他學院/中心</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 form-group">
+          <label class="form-label">其他系所/中心（非必填）：</label>
+          <select class="form-select" id="optional_department" name="optional_department" disabled>
+            <option value="" disabled selected>請先選擇其他學院/中心</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" id="planTypeContainer" style="display: none;">
+        <div class="col-12 form-group">
+          <label class="form-label required">計畫類別：</label>
+          <select class="form-select" name="plan_type" id="plan_type">
+            <option value="" disabled selected>請選擇計畫類別</option>
+            <option value="一般計畫">一般計畫</option>
+            <option value="年度計畫">年度計畫</option>
+            <option value="前瞻計畫">前瞻計畫</option>
+          </select>
+        </div>
+      </div>      
+        
+      <!-- 專案資訊區塊 -->
+      <div class="row">
+        <div class="col-12">
+          <h4 class="section-title">專案資訊</h4>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-12 form-group">
+          <label class="form-label required">合約名稱：</label>
+          <input class="form-control" name="project" required>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label class="form-label required">起始日：</label>
+          <input class="form-control" type="date" name="start" required>
+        </div>
+        
+        <div class="col-md-6 form-group">
+          <label class="form-label required">迄止日：</label>
+          <input class="form-control" type="date" name="end" required>
+        </div>
+      </div>
+      
+      <!-- 技轉資訊區塊 -->
+      <div class="row">
+        <div class="col-12">
+          <h4 class="section-title">技轉金資訊</h4>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label class="form-label required">態樣：</label>
+          <select class="form-select" name="type" required>
+            <option value="先期技轉金" selected>先期技轉金</option>
+            <option value="衍生利益金">衍生利益金</option>
+          </select>
+        </div>
+        
+        <div class="col-md-6 form-group">
+          <label class="form-label required">期數：</label>
+          <select class="form-select" name="installments" required>
+            <option value="一期付清" selected>一期付清</option>
+            <option value="分期-2期">分期-2期</option>
+            <option value="分期-3期">分期-3期</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-12 form-group">
+          <label class="form-label required">金額：</label>
+          <div class="input-group">
+            <span class="input-group-text">NT$</span>
+            <input class="form-control" type="number" name="amount" min="0" step="1" required>
+          </div>
+          <div class="form-note">請輸入新台幣金額</div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-12 form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="agreement" required>
+            <label class="form-check-label" for="agreement">
+              我已閱讀並同意<a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">創作人權益收入分配暨運用管理須知</a>
+            </label>
+          </div>
+        </div>
+      </div>
+        
+        <div class="d-flex justify-content-end mt-4">
+          <button type="submit" class="btn-submit">
+            下一步：分配資金 <i class="fas fa-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- 第二步：資金分配表單 -->
+    <div id="step2Form" class="hidden">
+      <div class="app-number">
+        <h5><i class="fas fa-file-alt me-2"></i>申請編號：<strong id="applicationNumber">YCK25A1001</strong></h5>
+        <div class="form-note">請妥善保存此編號以供後續查詢</div>
+      </div>
+      
+      <div class="funds-summary">
+        <div class="funds-total">
+          <i class="fas fa-money-bill-wave me-2"></i>可分配金額：<span id="distributableAmount">NT$ 0</span>
+        </div>
+        <div id="remainingAmount" class="form-note">剩餘分配金額：NT$ 0</div>
+      </div>
+      
+      <div class="row">
+        <div class="col-12">
+          <h4 class="section-title">創作人資金分配</h4>
+          <div class="form-note mb-3" style="color: #dc3545; font-weight: bold;">請填入每位創作人的分配金額，並「雙擊」創作人欄位以輸入詳細資料。</div>
+        </div>
+      </div>
+      
+      <div id="creatorDistributionContainer">
+        <!-- 創作人分配卡片將在這裡動態生成 -->
+      </div>
+      
+      <div id="distributionError" class="distribution-error">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span>分配金額總和必須等於技轉金總額</span>
+      </div>
+      
+      <div class="d-flex justify-content-between mt-4">
+        <button id="prevStepBtn" class="btn-step-back">
+          <i class="fas fa-arrow-left me-2"></i>上一步
+        </button>
+        <button id="submitAllocationBtn" class="btn-submit-step2">
+          提交分配 <i class="fas fa-check ms-2"></i>
+        </button>
+      </div>
+    </div>
+
+<!-- 條款模態框 -->
+  <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="termsModalLabel">創作人權益收入分配暨運用管理須知</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h5>創作人權益收入分配暨運用管理須知"下稱本須知"依據本校研發成果與技術移轉管理辦法"下稱管理辦法"處理相關事宜,若有未盡事宜,悉依本校其他相關規定辦理。</h5>
+          <p>一、依據管理辦法第三條創作人之分配權：<p>
+          <ol>
+            <li>創作人現有或曾有下列情事之一時，不予分配：解聘、免職、停聘、不續聘、開除學籍者。</li>
+            <li>創作人代表為研究團隊之代表人，對內得決定研究團隊成員分配權益收入之比例、權益收入之管理，對外得代表研究團隊決定分配事宜，並行使本辦法所定之一切權利義務。研究團隊非經創作人代表行為，不得向本校或本校各單位請求分配或主張一切權利。如有爭議，概由創作人代表負責協調解決；如因其爭議而使本校受有損害時，創作人代表應賠償本校一切損失。</li>
+            <li>創作人有二人以上時，以研究團隊為一主體而分配權益收入，且排除第一款所定不得分配之人後，依創作人代表指定數創作人之分配比例分配。依本條第一款所定無可得分配之人時，該權益收入全數歸入本校校級行政管理費。</li>
+          </ol>
+          <p>二、權益收入之分配方式依據管理辦法第九條辦理。<p>
+          <p>三、依本校研發成果與技術移轉管理辦法辦理分配。依同辦法第九條第六項，分配予創作人之個人收入，應按我國全民健康保險法及管理辦法現行法令規定支付雇主補充保險費者，由創作人之個人收入中支出。<p>
+          
+
+          <div class="ps-3 border-start border-3 border-danger">
+          <h5 class="text-danger">◎注意事項</h5>
+          <p class="text-danger">一、研究專戶支用控管：納入研究專戶之部分，僅限於報支研究團隊後續研究相關費用，其費用控管由創作人自行負責，本校行政單位僅依善良管理人之注意義務作經費科目建立、報支及資訊提供之服務。若發生盜用印鑑、無權代理等違法支用情事，而本校行政人員已盡善良管理人之注意義務仍無法察覺係違法支用者，依法概與本校無關。其因此而衍生之民刑事責任概由創作人及其相關涉及人員負責。</p>
+          <p class="text-danger">二、相關民刑事責任：若違反協議支用研究專戶經費者，除須依民法負賠償責任外，行為人尚可能涉及偽（變）造文書罪、盜用（或偽造）印文罪、侵占罪、背信罪、公務員圖利罪等刑事責任，請創作人謹慎控管報支程序。<p>
+          </div>
+          
+          <div class="ps-3 border-start border-3 border-primary">
+            <h5 class="text-primary">隱私權聲明</h5>
+            <p class="text-primary">
+              本系統所收集之個人資料僅供技轉金申請相關業務使用，不會提供給第三方單位。所有資料將依據個人資料保護法妥善保存。
+            </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- 第三步：完成提示畫面 -->
+  <div id="step3Form" class="hidden text-center" style="padding: 50px 20px;">
+    <div class="success-icon mb-4">
+      <i class="fas fa-check-circle" style="font-size: 80px; color: #28a745;"></i>
+    </div>
+    <h3 class="mb-3">你已完成先期技轉金分配表填寫</h3>
+    <p class="lead">請聯絡 <strong>研究發展處</strong> 取得最終表單與後續辦理方式。</p>
+  </div>
+    
+    <div class="footer">
+      <p>© 2025 國立陽明交通大學先期技轉金系統 | 如有任何疑問，請聯繫研究發展處 (03)571-2121 #53274</p>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    let globalDistributableAmount = 0;
+    // 頁面初始化時先定義
+    window.creatorDetails = {};
+
+    $(document).ready(function() {
+            // 學院和系所數據
+      const faculties = {
+          "校級研究中心": ["緯創資通-陽明交大智慧與綠能產業創新聯合研發中心",'瑞昱-陽明交大創新研究中心','立方衛星系統研究中心','NVIDIA．陽明交大聯合創新中心','文化研究國際中心','友達．陽明交大聯合研發中心','前瞻科技與系統學術研究中心','人工智慧普適研究中心','人文與社會科學研究中心','力積電-陽明交大研究中心','中華電信-陽明交大創新研究中心','物聯網智慧系統研究中心','高等教育開放資源研究中心','陽明交大-穩懋聯合技術創新中心','陽明交大雷射系統研究中心','國防資電科技中心','廣達-陽明交大聯合AI研究中心','晶片系統研究中心','防災與水環境研究中心','陽明交大-台積電聯合研發中心','聯發科技-陽明交大創新研究中心','資通安全教學與研究中心','跨領域設計科學研究中心','創新醫材轉譯研發中心','腦科學研究中心','腫瘤與免疫學研究中心','健康長壽與老化科學研究中心','樺漢-陽明交大ESG淨零轉型創新研究中心','啓碁-陽明交大聯合研究中心'],
+          '電子與資訊研究中心': ["電子與資訊研究中心","矽導研發中心","陽明交大工研院聯合研發中心","顯示科技聯合研究中心","前瞻網路技術研發中心","陽明交大-IBM智慧物聯網與巨量資料分析研發中心","鴻海-陽明交大聯合研究中心","人工智慧系統檢測中心","生醫電子轉譯研究中心","複合物半導體研究中心","環境科技及智慧系統研究中心"],
+          "人文藝術與社會學院": ["外國語文學系","英語教學研究所","傳播研究所","教育研究所","社會與文化研究所","應用藝術研究所","音樂研究所","建築研究所","心智哲學研究所","科技與社會研究所","視覺文化研究所","師資培育中心","語言教學與研究中心","亞際文化研究國際碩士學位學程",'醫療人文跨領域研究中心'],
+          "工學院": ["土木工程學系","機械工程學系","材料科學與工程學系","奈米科技碩士班","環境工程研究所","太空系統工程研究所","工學院碩士在職專班",'前瞻火箭研究中心','機械製造與熱流中心'],
+          "工程生物科學學院": ["生物科技學系","生物資訊及系統生物研究所","分子醫學與生物工程研究所","工程生物科學學院產業博士班","跨領域神經科學博士學位學程","生醫科學與工程博士學位學程",'生物資訊中心'],
+          "牙醫學院": ["牙醫學系","口腔生物研究所","口腔組織工程暨生技材料研究所"],
+          "生命科學院": ["生命科學系暨基因體科學研究所","神經科學研究所","微生物及免疫學研究所","生化暨分子生物研究所","生物醫學資訊研究所","跨領域分子醫學碩士學位學程","分子醫學博士學位學程","跨領域神經科學國際研究生博士學位學程","生技醫療經營管理碩士在職學位學程","生技醫療產業博士學位學程"],
+          "生物醫學暨工程學院": [
+            "醫學生物技術暨檢驗學系",
+            "生物醫學影像暨放射科學系",
+            "物理治療暨輔助科技學系",
+            "生物醫學工程學系",
+            "生醫光電研究所",
+            "數位醫療學士學位學程",
+            "生物醫學暨工程科技產業博士學位學程"
+          ],
+          "光電學院": [
+            "光電系統研究所",
+            "照明與能源光電研究所",
+            "影像與生醫光電研究所",
+            "光電學院博士班",
+            "光電科技碩士在職專班"
+          ],
+          "科技法律學院": [
+            "科技法律研究所",
+            "企業法律中心",
+            "TPP及跨國經貿法律研究中心",
+            "金融監理與公司治理研究中心"
+          ],
+          "客家文化學院": [
+            "人文社會學系",
+            "傳播與科技學系",
+            "客家文化學院博士班",
+            "客家社會與文化碩士在職專班",
+            "國際客家研究中心"
+          ],
+          "理學院": [
+            "電子物理系",
+            "應用數學系",
+            "應用化學系",
+            "統計學研究所",
+            "物理研究所",
+            "理學院科學學士學位學程",
+            "永續化學科技國際研究生博士學位學程",
+            "理學院碩士在職專班",
+            '理論與計算物理中心'
+          ],
+          "產學創新研究學院": [
+            "前瞻半導體研究所",
+            "智能系統研究所",
+            '交大-台積電聯合研發中心',
+            '其他'
+          ],
+          "國際半導體產業學院": [
+            "國際半導體產業學院碩士班",
+            "國際半導體產業學院博士班",
+            "國際半導體產業學院越南境外碩士專班",
+            "國防教育與研究總中心",
+            "系統工程與科技學士學位學程"
+          ],
+          "智慧科學暨綠能學院": [
+            "智慧計算與科技研究所",
+            "智慧系統與應用研究所",
+            "智慧與綠能產學研究所",
+            '長春-陽明交大聯合研發中心'
+          ],
+          "電機學院": [
+            "電機工程學系",
+            "光電工程學系",
+            "電子研究所",
+            "電控工程研究所",
+            "電信工程研究所",
+            "生醫工程研究所",
+            "電機工程學系碩博士班",
+            "電機學院碩士在職專班",
+            "電機學院博士班",
+            "奈米中心",
+            "半導體工程學系",
+            "光電博士學位學程",
+            "奈米科技中心",
+            "田家炳光電中心",
+            "腦科技中心",
+            "前瞻電力電子中心",
+            "交大-環球晶圓化合物半導體研究中心",
+            "緯創-交大嵌入式人工智慧研發中心",
+            "先進電光技術與系統技術整合研究中心",
+            "NYCU-IIST智能資安科技產學聯合研發中心"
+          ],
+          "資訊學院": [
+            "資訊工程學系",
+            "資訊科學與工程研究所",
+            "網路工程研究所",
+            "多媒體工程研究所",
+            "數據科學與工程研究所",
+            "網路與資訊系統博士學位學程",
+            "資訊學院博士班",
+            "資訊學院碩士在職專班",
+            "國防資安管理碩士在職專班",
+            "科技犯罪偵查資通訊碩士在職專班",
+            "資訊安全研究所",
+            "資訊學院國際資訊碩士班",
+            "巨量資料技術創新中心",
+            "資策會交大聯合研發中心",
+            "通訊服務與軟體研究中心",
+            "電腦視覺研發中心",
+            "華邦電子集團-陽明交大研究中心"
+          ],
+          "管理學院": [
+            "管理科學系",
+            "運輸與物流管理學系",
+            "工業工程與管理學系",
+            "資訊管理與財務金融學系",
+            "經營管理研究所",
+            "科技管理研究所",
+            "資訊管理研究所",
+            "高階主管管理碩士學程",
+            "企業管理碩士學位學程",
+            "管理學院碩士在職專班",
+            "運輸研究中心",
+            "金融科技創新研究中心",
+            "運籌與供應鏈研究中心",
+            "台商研究中心",
+            "王道經營管理研究中心",
+            "健康科技創新與管理研究中心"
+          ],
+          "醫學院": [
+            "醫學系",
+            "中醫學系",
+            "臨床醫學研究所",
+            "傳統醫藥研究所",
+            "公共衛生研究所",
+            "醫務管理研究所",
+            "衛生福利研究所",
+            "環境與職業衛生研究所",
+            "生物醫學資訊研究所",
+            "生理學研究所",
+            "藥理學研究所",
+            "解剖學及細胞生物學研究所",
+            "急重症醫學研究所",
+            "腦科學研究所",
+            "國際衛生碩士學位學程",
+            "轉譯醫學博士學位學程",
+            "公共衛生碩士學位學程",
+            "環境科技博士學位學程",
+            "跨領域醫學博士學位學程",
+            "智慧醫療與政策管理產業博士學位學程",
+            "心臟血管疾病研究中心",
+            "睡眠研究中心",
+            "微菌叢研究中心",
+            "幹細胞研究中心",
+            "社區醫學研究中心",
+            "膜蛋白結構生物學研究中心"
+          ],
+          "藥物科學院": [
+            "生物藥學研究所",
+            "藥學系",
+            "食品安全及健康風險評估研究所",
+            "醫藥品法規科學博士學位學程"
+          ],
+          "護理學院": [
+            "護理學系",
+            "臨床護理研究所",
+            "社區健康照護研究所"
+          ],
+          "博雅書苑": [
+            "人文科學中心",
+            "藝文中心",
+            "體育教育中心",
+            "社教中心",
+            "百川學士學位學程"
+          ],
+          "跨專業長期照顧與管理碩士學位學程": [
+            "跨專業長期照顧與管理碩士學位學程"
+          ],
+          "跨領域/跨院": [
+            "電機資訊國際碩士學位學程",
+            "電機資訊國際博士學位學程",
+            "生醫科學與工程博士學位學程",
+            "機器人碩士學位學程",
+            "人工智慧技術與應用碩士學位學程"
+          ],
+          "跨院學程推展辦公室": [
+            "學士後電子與光子學士學位學程"
+          ],
+          "台灣聯合大學系統": [
+            "亞際文化研究國際碩士學位學程",
+            "跨領域神經科學博士學位學程",
+            "光電博士學位學程",
+            "環境科技博士學位學程"
+          ]
+      };
+      
+      // 填充學院選項
+      const facultySelect = $('#faculty');
+      $.each(Object.keys(faculties), function(index, faculty) {
+        facultySelect.append($('<option>', {
+          value: faculty,
+          text: faculty
+        }));
+      });
+
+      // ✅ 填充「其他學院」選項
+      const optionalFacultySelect = $('#optional_faculty');
+      $.each(Object.keys(faculties), function(index, faculty) {
+        optionalFacultySelect.append($('<option>', {
+          value: faculty,
+          text: faculty
+        }));
+      });
+      
+      // 學院改變時更新系所選項
+      facultySelect.change(function() {
+        const selectedFaculty = $(this).val();
+        const departmentSelect = $('#department');
+        
+        // 清除並禁用系所選擇
+        departmentSelect.empty().prop('disabled', true);
+        departmentSelect.append($('<option>', {
+          value: "",
+          text: "請選擇系所",
+          selected: true,
+          disabled: true
+        }));
+        
+        if (selectedFaculty) {
+          // 填充系所選項
+          $.each(faculties[selectedFaculty], function(index, department) {
+            departmentSelect.append($('<option>', {
+              value: department,
+              text: department
+            }));
+          });
+          departmentSelect.prop('disabled', false);
+        }
+      });
+
+      // 「其他學院」改變時，更新「其他系所」
+      optionalFacultySelect.change(function () {
+        const selectedFaculty = $(this).val();
+        const optionalDepartmentSelect = $('#optional_department');
+
+        // 清除並禁用「其他系所」
+        optionalDepartmentSelect.empty().prop('disabled', true);
+        optionalDepartmentSelect.append($('<option>', {
+          value: "",
+          text: "請選擇其他系所",
+          selected: true,
+          disabled: true
+        }));
+
+        if (selectedFaculty) {
+          $.each(faculties[selectedFaculty], function(index, department) {
+            optionalDepartmentSelect.append($('<option>', {
+              value: department,
+              text: department
+            }));
+          });
+          optionalDepartmentSelect.prop('disabled', false);
+        }
+      });
+
+      // 學院改變時檢查是否需要顯示計畫類別
+      $('#faculty').change(function() {
+        const selectedFaculty = $(this).val();
+        const planTypeContainer = $('#planTypeContainer');
+        
+        if (selectedFaculty === '產學創新研究學院') {
+          planTypeContainer.fadeIn();
+          $('#plan_type').prop('required', true);
+        } else {
+          planTypeContainer.fadeOut();
+          $('#plan_type').prop('required', false);
+        }
+        
+      });
+
+      // 顯示「其他欄位」的條件控制
+      function checkShowOptionalFields() {
+        const faculty = document.getElementById('faculty').value;
+        const department = document.getElementById('department').value;
+        const extraFields = document.getElementById('extraDeptFields');
+        if (faculty === '產學創新研究學院' && department === '其他') {
+          extraFields.style.display = 'flex'; // 或 block
+        } else {
+          extraFields.style.display = 'none';
+        }
+      }
+
+  // 綁定主系所欄位的變更事件
+  $('#faculty, #department').change(checkShowOptionalFields);
+
+        // 設置日期默認值
+      const today = new Date();
+      const oneYearLater = new Date();
+      oneYearLater.setFullYear(today.getFullYear() + 1);
+      
+      $('input[name="start"]').val(formatDate(today));
+      $('input[name="end"]').val(formatDate(oneYearLater));
+      
+      // 格式化日期為YYYY-MM-DD
+      function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+         
+      // 第一步表單提交
+      $('#basicInfoForm').submit(function(e) {
+        e.preventDefault();
+        
+        // 簡單表單驗證
+        let isValid = true;
+        $('input, select').each(function() {
+          if ($(this).prop('required') && !$(this).val()) {
+            isValid = false;
+            $(this).addClass('is-invalid');
+          } else {
+            $(this).removeClass('is-invalid');
+          }
+        });
+        
+        // 檢查同意條款
+        if (!$('#agreement').prop('checked')) {
+          isValid = false;
+          $('#agreement').addClass('is-invalid');
+          showAlert('請閱讀並同意申請條款！', 'error');
+        }
+
+        // 收集表單數據
+        const formData = {};
+        $(this).serializeArray().forEach(function(item) {
+          formData[item.name] = item.value;
+        });
+        
+        // 驗證日期
+        const startDate = new Date($('input[name="start"]').val());
+        const endDate = new Date($('input[name="end"]').val());
+        
+        if (endDate < startDate) {
+          showAlert('迄止日期必須晚於起始日期！', 'error');
+          return false;
+        }
+        
+        // 顯示加載狀態
+        const submitButton = $('.btn-submit');
+        submitButton.html('<i class="fas fa-spinner fa-spin me-2"></i>提交中...');
+        submitButton.prop('disabled', true);
+
+        // 提交到Google Apps Script
+        try {
+          google.script.run
+            .withSuccessHandler(onSubmitSuccess)
+            .withFailureHandler(onSubmitFailure)
+            .processForm(formData);
+        } catch (error) {
+          onSubmitFailure(error);
+        }
+
+        // 提交成功處理函數
+        function onSubmitSuccess(response) {
+            // 顯示申請編號
+            $('#applicationNumber').text(response.applicationNumber);
+            $('#appNumberContainer').fadeIn();
+
+            // 顯示成功消息
+            showAlert(`表單提交成功！申請編號: ${response.applicationNumber}`, 'success');
+        
+            // 重置按鈕狀態
+            const submitButton = $('.btn-submit');
+            submitButton.html('<i class="fas fa-paper-plane me-2"></i>下一步:分配資金');
+            submitButton.prop('disabled', false);
+
+            // 設置可分配金額
+            const amount = parseInt($('input[name="amount"]').val()) || 0;
+            const collabType = $('#collab_type').val();
+            globalDistributableAmount = calculateDistributableAmount(amount, collabType);
+            distributable = globalDistributableAmount
+            $('#distributableAmount').text(`NT$ ${distributable.toLocaleString()}`);
+
+            // 解析創作人
+            const creators = $('input[name="creator"]').val().split(',').map(name => name.trim()).filter(name => name);
+        
+             // 生成分配界面
+            generateCreatorDistribution(creators, amount);
+            
+
+             // 切換到第二步
+            showStep2();
+            
+            // 更新步驟指示器
+             $('.step').removeClass('active');
+            $('.step').eq(1).addClass('active');
+            
+            window.scrollTo(0, 0);
+        }
+
+        // 提交失敗處理函數
+        function onSubmitFailure(error) {
+            showAlert('表單提交失敗：' + (error.message || '伺服器錯誤'), 'error');
+            
+            // 重置按鈕狀態
+            const submitButton = $('.btn-submit');
+            submitButton.html('<i class="fas fa-paper-plane me-2"></i>下一步:分配資金');
+            submitButton.prop('disabled', false);
+        }
+      });
+
+        // 計算分配金額7275%
+        function calculateDistributableAmount(amount, collabType) {
+            if (collabType === '國科會產學合作') {
+                return Math.round(amount * 0.72);
+            } else {
+                return Math.round(amount * 0.75);
+            }
+            }
+
+        // 生成第二步顯示
+        function showStep2() {
+            $('#step1Form').hide();
+            $('#step2Form').removeClass('hidden').css('display', 'block');
+            $('.step').removeClass('active');
+            $('.step').eq(1).addClass('active');
+            
+            // 按鈕處理
+            $('.btn-submit').hide();                // 隱藏第一步按鈕
+            $('.btn-submit-step2').show();
+            $('#prevStepBtn').show();              // 顯示上一步按鈕
+            }
+
+        
+
+      // 生成創作人分配界面
+    function generateCreatorDistribution(creators, totalAmount) {
+        const container = $('#creatorDistributionContainer');
+        container.empty();
+
+        if (creators.length === 0) {
+            container.html('<div class="alert alert-warning">未提供創作人資訊</div>');
+            return;
+        }
+
+        // 自動選擇代表（如果只有一個創作人）
+        let representative = creators.length === 1 ? creators[0] : '';
+
+        // 取得期數（文字）
+        const installments = $('select[name="installments"]').val();
+        let installmentCount = 1;
+        if (installments === '分期-2期') {
+            installmentCount = 2;
+        } else if (installments === '分期-3期') {
+            installmentCount = 3;
+        }
+
+        // 一期付清（維持原樣）
+        if (installmentCount === 1) {
+            creators.forEach((creator, index) => {
+            const card = `
+                <div class="creator-card" ondblclick="openCreatorDetailModal('${creator}')">
+                <div class="creator-header">
+                    <h5><i class="fas fa-user me-2"></i>${creator}</h5>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="representative" 
+                            id="rep_${index}" value="${creator}" 
+                            ${creator === representative ? 'checked' : ''}>
+                    <label class="form-check-label" for="rep_${index}">
+                        創作人代表
+                    </label>
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                <label class="form-label">個人所得 (NT$)：</label>
+                <input type="number" class="form-control income-input" 
+                        data-creator="${creator}" data-installment="1" value="0" min="0" step="1000">
+                </div>
+                <div class="form-group mb-2">
+                <label class="form-label">研究經費 (NT$)：</label>
+                <input type="number" class="form-control research-input" 
+                        data-creator="${creator}" data-installment="1" value="0" min="0" step="1000">
+                </div>
+                <div class="allocated-summary text-end text-muted" 
+                    data-creator="${creator}" data-installment="1" style="font-size: 0.9em;">
+                總分配金額：NT$ 0
+                </div>
+                </div>
+            `;
+            container.append(card);
+            });
+        }
+
+        // 分期：產生多期分配區塊
+        else {
+          const perInstallmentTotal = Math.floor(globalDistributableAmount / installmentCount);
+
+          creators.forEach((creator, index) => {
+              const card = `
+              <div class="creator-card" ondblclick="openCreatorDetailModal('${creator}')">
+                  <div class="creator-header">
+                      <h5><i class="fas fa-user me-2"></i>${creator}</h5>
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="representative" 
+                              id="rep_${index}" value="${creator}" 
+                              ${creator === representative ? 'checked' : ''}>
+                          <label class="form-check-label" for="rep_${index}">
+                              創作人代表
+                          </label>
+                      </div>
+                  </div>
+                  
+                  <div class="row installment-container">
+                      ${Array.from({length: installmentCount}, (_, i) => i + 1).map(installment => `
+                      <div class="col-md-${12 / installmentCount} installment-block">
+                          <div class="installment-header">
+                              <h6>第 ${installment} 期</h6>
+                          </div>
+                          <div class="form-group mb-2">
+                              <label class="form-label">個人所得 (NT$)：</label>
+                              <input type="number" class="form-control income-input" 
+                                      data-creator="${creator}" data-installment="${installment}" value="0" min="0" step="1000">
+                          </div>
+                          <div class="form-group mb-2">
+                              <label class="form-label">研究經費 (NT$)：</label>
+                              <input type="number" class="form-control research-input" 
+                                      data-creator="${creator}" data-installment="${installment}" value="0" min="0" step="1000">
+                          </div>
+                          <div class="allocated-summary text-end text-muted" 
+                              data-creator="${creator}" data-installment="${installment}">
+                              總分配金額：NT$ 0
+                          </div>
+                      </div>
+                      `).join('')}
+                  </div>
+              </div>
+              `;
+              container.append(card);
+          });
+
+          // 添加每期剩余金额显示
+          container.prepend(`<div class="row mb-3" id="installmentSummaryRow"></div>`);
+          for (let i = 1; i <= installmentCount; i++) {
+              $('#installmentSummaryRow').append(`
+                  <div class="col-md-${12 / installmentCount}">
+                      <div class="installment-summary-card p-2 text-center">
+                          <strong>第 ${i} 期</strong>
+                          <div class="installment-summary" data-installment="${i}">
+                              剩餘 NT$ ${perInstallmentTotal.toLocaleString()}
+                          </div>
+                      </div>
+                  </div>
+              `);
+          }
+      }
+
+
+        // 綁定輸入事件
+        $('.allocation-amount').on('input', updateRemainingAmount);
+        updateRemainingAmount();
+        updateIndividualAllocationSummary();
+        }
+
+    window.openCreatorDetailModal = function (creatorName) {
+    $('#creatorNameField').val(creatorName);
+    // 清空其他欄位
+    $('#idNumber').val('');
+    $('#accountTypeInternal').prop('checked', true).trigger('change'); // 預設校內帳戶
+    $('#internalBank').val('');
+    $('#last5Digits').val('');
+    $('#bankBranch').val('');
+    $('#bankAccount').val('');
+    $('#researchCode').val('');
+    
+    // 檢查此創作人是否有填寫研究經費 > 0
+    let totalResearch = 0;
+    $(`.research-input[data-creator="${creatorName}"]`).each(function () {
+        totalResearch += parseInt($(this).val()) || 0;
+    });
+
+    if (totalResearch > 0) {
+        $('#researchAccountCodeGroup').show();
+    } else {
+        $('#researchAccountCodeGroup').hide();
+        $('#researchAccountCodeInput').val('');
+    }
+
+    $('#creatorDetailModal').modal('show');
+    };
+
+    // 根據帳戶類型切換欄位
+    $('input[name="accountType"]').on('change', function () {
+    if ($(this).val() === '校內') {
+        $('#internalAccountFields').show();
+        $('#externalAccountFields').hide();
+    } else {
+        $('#internalAccountFields').hide();
+        $('#externalAccountFields').show();
+    }
+    });
+
+    
+
+    // 儲存時（可延伸到全局儲存對應資料）
+    window.saveCreatorDetail = function () {
+    const creator = $('#creatorNameField').val();
+    const idNumber = $('#idNumber').val();
+    const accountType = $('input[name="accountType"]:checked').val();
+    const researchCode = $('#researchCode').length > 0 ? $('#researchCode').val() : '';
+
+    let accountInfo = '';
+    if (accountType === '校內') {
+        accountInfo = `${$('#internalBank').val()}末五碼：${$('#last5Digits').val()}`;
+    } else {
+        accountInfo = `局號：${$('#bankBranch').val()} 帳號：${$('#bankAccount').val()}`;
+    }
+
+    // ✅ 將資料存入全域物件
+    window.creatorDetails[creator] = {
+        idNumber: idNumber,
+        accountType: accountType,
+        accountInfo: accountInfo,
+        researchCode: researchCode
+    };
+
+    console.log('已儲存創作人資料：', window.creatorDetails[creator]);
+
+    $('#creatorDetailModal').modal('hide');
+    };
+
+    // 更新個人分配金額
+    function updateIndividualAllocationSummary() {
+        $('.income-input, .research-input').off('input').on('input', function () {
+            const creator = $(this).data('creator');
+            const installment = $(this).data('installment');
+
+            const income = parseInt($(`.income-input[data-creator="${creator}"][data-installment="${installment}"]`).val()) || 0;
+            const research = parseInt($(`.research-input[data-creator="${creator}"][data-installment="${installment}"]`).val()) || 0;
+            const total = income + research;
+
+            $(`.allocated-summary[data-creator="${creator}"][data-installment="${installment}"]`)
+            .text(`已分配金額：NT$ ${total.toLocaleString()}`);
+
+            // 如果你還有全體剩餘金額統計，也可以在這裡觸發更新
+            updateRemainingAmount(); 
+        });
+        // 🔁 更新每期剩餘金額
+          const totalAmount = globalDistributableAmount;
+          const installments = $('select[name="installments"]').val();
+          let installmentCount = 1;
+          if (installments === '分期-2期') {
+              installmentCount = 2;
+          } else if (installments === '分期-3期') {
+              installmentCount = 3;
+          }
+          const perInstallmentTotal = Math.floor(totalAmount / installmentCount);
+
+
+          for (let i = 1; i <= installmentCount; i++) {
+            let used = 0;
+
+            $(`.income-input[data-installment="${i}"], .research-input[data-installment="${i}"]`).each(function () {
+              used += parseInt($(this).val()) || 0;
+            });
+
+            const remaining = perInstallmentTotal - used;
+            const display = `（可分 NT$ ${perInstallmentTotal.toLocaleString()}｜剩餘 NT$ ${remaining.toLocaleString()}）`;
+
+            $(`.installment-summary[data-installment="${i}"]`).text(display);  // ⬅ 這裡是關鍵更新
+          }          
+        }
+
+    // 更新剩餘分配金額
+  function updateRemainingAmount() {
+      const totalAmount = globalDistributableAmount;
+      let allocated = 0;
+      const installmentSums = {}; // ⬅ 用來計算每期已分配
+
+      $('.income-input, .research-input').each(function () {
+          const val = parseInt($(this).val()) || 0;
+          const installment = $(this).data('installment');
+          allocated += val;
+
+          if (!installmentSums[installment]) installmentSums[installment] = 0;
+          installmentSums[installment] += val;
+      });
+
+      const remaining = totalAmount - allocated;
+      const remainingText = `剩餘分配金額：NT$ ${remaining.toLocaleString()}`;
+      $('#remainingAmount').text(remainingText);
+
+      if (remaining === 0) {
+          $('#distributionError').hide();
+          $('#remainingAmount').css('color', 'green');
+      } else {
+          $('#distributionError').show();
+          $('#remainingAmount').css('color', '#dc3545');
+      }
+
+      // ✅ 更新每期「可分/剩餘」金額
+      const installmentCount = Object.keys(installmentSums).length || 1;
+      const perInstallmentTotal = Math.floor(totalAmount / installmentCount);
+
+      for (let i = 1; i <= installmentCount; i++) {
+          const used = installmentSums[i] || 0;
+          const remain = perInstallmentTotal - used;
+          const text = `可分 NT$ ${perInstallmentTotal.toLocaleString()}｜剩餘 NT$ ${remain.toLocaleString()}`;
+
+          $(`.installment-summary[data-installment="${i}"]`)
+              .html(text)
+              .toggleClass('text-danger', remain < 0)
+              .toggleClass('text-success', remain >= 0);
+      }
+  }
+      
+      // 上一步按鈕
+    $('#prevStepBtn').click(function () {
+    $('#step2Form').addClass('hidden').hide();
+    $('#step1Form').removeClass('hidden').show();
+
+    // 更新步驟指示器
+    $('.step').removeClass('active');
+    $('.step').eq(0).addClass('active');
+    });
+
+    function collectCreatorAllocations() {
+        const creators = {}; // 收集每人金額資訊
+        const installments = new Set();
+
+        $('.income-input').each(function () {
+            const creator = $(this).data('creator');
+            const installment = $(this).data('installment');
+            const income = parseInt($(this).val()) || 0;
+            
+            if (!creators[creator]) creators[creator] = {};
+            if (!creators[creator][installment]) creators[creator][installment] = {};
+
+            creators[creator][installment].income = income;
+            installments.add(installment);
+        });
+
+        $('.research-input').each(function () {
+            const creator = $(this).data('creator');
+            const installment = $(this).data('installment');
+            const research = parseInt($(this).val()) || 0;
+
+            if (!creators[creator][installment]) creators[creator][installment] = {};
+            creators[creator][installment].research = research;
+        });
+
+        return {
+            creators: creators,
+            installments: [...installments],
+            representative: $('input[name="representative"]:checked').val(),
+            creatorDetails: window.creatorDetails || {}
+        };
+        }
+
+    // 提交
+    $('#submitAllocationBtn').click(function () {
+    const totalAmount = globalDistributableAmount;
+    let allocated = 0;
+
+    const allocations = {}; // 改為物件以支援多期和多創作人
+    const installments = new Set();
+
+    // 收集所有創作人、期數、金額
+    $('.income-input, .research-input').each(function () {
+        const creator = $(this).data('creator');
+        const installment = $(this).data('installment');
+        const type = $(this).hasClass('income-input') ? 'income' : 'research';
+        const amount = parseInt($(this).val()) || 0;
+
+        allocated += amount;
+        installments.add(installment);
+
+        if (!allocations[creator]) allocations[creator] = {};
+        if (!allocations[creator][installment]) allocations[creator][installment] = { income: 0, research: 0 };
+
+        allocations[creator][installment][type] = amount;
+    });
+
+    // 驗證總金額是否一致
+    if (allocated !== totalAmount) {
+        const diff = totalAmount - allocated;
+        showAlert(`分配金額不符：差額 NT$ ${Math.abs(diff).toLocaleString()}`, 'error');
+        return;
+    }
+
+    // 檢查創作人代表
+    const representative = $('input[name="representative"]:checked').val();
+    if (!representative && Object.keys(allocations).length > 1) {
+        showAlert('請選擇一位創作人代表！', 'error');
+        return;
+    }
+
+    // ➕ 新增檢查條件
+    for (const creator in allocations) {
+        let totalResearch = 0;
+        for (const inst in allocations[creator]) {
+            const instData = allocations[creator][inst];
+            totalResearch += instData.research || 0;
+        }
+
+        const detail = window.creatorDetails[creator]; 
+        if (!detail) {
+            showAlert(`請填寫創作人「${creator}」的詳細資料！`, 'error');
+            return;
+        }
+
+        // 基本欄位必填檢查
+        if (!detail.idNumber || detail.idNumber.trim() === '') {
+            showAlert(`請填寫創作人「${creator}」的身分證字號！`, 'error');
+            return;
+        }
+
+        if (!detail.accountInfo || detail.accountInfo.trim() === '') {
+            showAlert(`請填寫創作人「${creator}」的帳戶資訊！`, 'error');
+            return;
+        }
+
+        // 若有研究經費，則必填研究專戶代號
+        if (totalResearch > 0) {
+            if (!detail.researchCode || detail.researchCode.trim() === '') {
+                showAlert(`創作人「${creator}」有研究經費，請填寫研究專戶代碼！`, 'error');
+                return;
+            }
+        }
+    }
+
+    // 收集創作人詳細資料
+    const creatorDetails = window.creatorDetails || {};
+
+    // 整合資料
+    const data = {
+        applicationNumber: $('#applicationNumber').text().trim(),
+        representative,
+        creators: allocations,
+        creatorDetails,
+        installments: Array.from(installments).sort((a, b) => a - b)
+    };
+
+    console.log('📦 最終送出資料：', data);
+
+    // 顯示載入狀態
+    const btn = $(this);
+    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>提交中...');
+
+    google.script.run
+        .withSuccessHandler(function (response) {
+        showAlert('創作人分配資料已成功儲存！', 'success');
+        btn.prop('disabled', false).html('<i class="fas fa-check me-2"></i>已提交');
+            
+        // ✅ 顯示第三步畫面
+        $('#step1Form, #step2Form').hide();
+        $('#step3Form').fadeIn();
+
+        // ✅ 更新步驟指示器
+        $('.step').removeClass('active');
+        $('.step').eq(2).addClass('active');
+
+        // 可選：你可以鎖住畫面、跳轉下一步、或顯示完成畫面
+        })
+        .withFailureHandler(function (err) {
+        howAlert('儲存失敗：' + (err.message || err), 'error');
+        btn.prop('disabled', false).html('<i class="fas fa-check me-2"></i>重新提交');
+        })
+        .processAllocation(data);
+    });          
+
+      
+      // 顯示提示信息
+      function showAlert(message, type) {
+        const alertBox = $('#alertBox');
+        const alertMessage = $('#alertMessage');
+        
+        alertBox.removeClass('success error');
+        alertBox.addClass(type);
+        alertMessage.text(message);
+        alertBox.fadeIn();
+        
+        // 5秒後自動隱藏
+        setTimeout(() => {
+          alertBox.fadeOut();
+        }, 5000);
+      }
+    });
+  </script>
+
+<!-- 創作人詳細資料 Modal -->
+<div class="modal fade" id="creatorDetailModal" tabindex="-1" aria-labelledby="creatorDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="creatorDetailModalLabel">創作人詳細資訊</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+      </div>
+      <div class="modal-body">
+        <form id="creatorDetailForm">
+          <div class="mb-3">
+            <label class="form-label">創作人姓名</label>
+            <input type="text" id="creatorNameField" class="form-control" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">身分證字號</label>
+            <input type="text" id="idNumber" class="form-control" maxlength="10">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">帳戶類型</label><br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="accountType" value="校內" checked>
+              <label class="form-check-label">校內</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="accountType" value="校外">
+              <label class="form-check-label">校外</label>
+            </div>
+          </div>
+          <div id="internalAccountFields">
+            <label class="form-label">銀行別</label>
+            <select class="form-select mb-2" id="internalBank">
+              <option value="郵局">郵局</option>
+              <option value="玉山">玉山</option>
+            </select>
+            <input type="text" class="form-control" id="last5Digits" placeholder="末五碼" maxlength="5">
+          </div>
+          <div id="externalAccountFields" style="display: none;">
+            <label class="form-label">局號</label>
+            <input type="text" class="form-control mb-2" id="bankBranch" placeholder="局號">
+            <label class="form-label">帳號</label>
+            <input type="text" class="form-control" id="bankAccount" placeholder="帳號">
+          </div>
+          <div id="researchAccountCodeGroup" class="form-group mb-3" style="display: none;">
+            <label class="form-label">研究專戶代碼：</label>
+            <input type="text" class="form-control" id="researchCode" placeholder="請輸入研究專戶代碼">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+        <button type="button" class="btn btn-primary" onclick="saveCreatorDetail()">儲存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
